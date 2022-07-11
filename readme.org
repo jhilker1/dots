@@ -1,7 +1,7 @@
 #+title: Dotfiles
 #+property: header-args :noweb yes
 #+property: header-args:nix :tangle no
-
+#+property: header-args:conf-yaml :tangle ~/.fzf-marks
 
 These are my "mostly literate" dotfiles. I'm currently using a mix of GNU Stow to manage the larger dotfiles (such as my Qtile config and my Doom Emacs config), while I use [[github:nix-community/home-manager][Home-Manager]] to manage things such as my alacritty config.
 
@@ -47,13 +47,14 @@ home.packages = with pkgs; [
     neofetch
     jq
     docker
+    sqlite
     <<hmPython>>
   ];
 #+end_src
 
 ** Language Configuration
 *** Python
-I love working with python; but I've found that maintaining dependencies can be a pain. While I normally like to keep a few global packages (such as numpy/pandas, matplotlib, fontforge, and flask), I much prefer to use something like virtualenvwrapper to maintain environments for each project.
+I love working with python, but I've found that maintaining dependencies can be a pain. While I normally like to keep a few global packages (such as numpy/pandas, matplotlib, fontforge, and flask), I much prefer to use something like virtualenvwrapper to maintain environments for each project.
 #+name: hmPython
 #+begin_src nix
 (python39.withPackages(p: with p; [
@@ -76,8 +77,8 @@ I use ZSH for my day-to-day shell. However, because I'm currently using WSL2, I 
 <<hmStarship>>
 #+end_src
 
-** FZF
-
+** Programs
+*** FZF
 #+name: hmFzf
 #+begin_src nix
 programs.fzf = {
@@ -87,7 +88,16 @@ programs.fzf = {
 };
 #+end_src
 
-** ZSH
+**** FZF-Marks
+I normally use fzf-marks to quickly jump to my most commonly used directories - such as my roam directories, etc.
+#+begin_src conf-yaml
+winhome: /mnt/c/Users/camoh/
+dotfiles: ~/.dotfiles/
+org: /mnt/c/Users/camoh/Dropbox/org/
+#+end_src
+
+
+*** ZSH
 I prefer to use ZSH over Bash because of syntax highlighting and autosuggestions.
 #+name: hmZsh
 #+begin_src nix
@@ -98,11 +108,12 @@ programs.zsh = {
   autocd = true;
   initExtra = ''
     <<venvWrapperConf>>
+    source ~/.local/fzf-marks/fzf-marks.plugin.zsh
   '';
 };
 #+end_src
 
-** Bash
+*** Bash
 Although I normally use ZSH, sometimes I might want or need to use bash for a simple script. This just sets up my ZSH to be run if if my nix zsh exists.
 #+name: hmBash
 #+begin_src nix
@@ -110,12 +121,13 @@ programs.bash = {
   enable = true;
   initExtra = ''
     <<venvWrapperConf>>
+    source ~/.local/fzf-marks/fzf-marks.plugin.bash
     if [[ -e  "$HOME/.nix-profile/bin/zsh" ]]; then exec "~/.nix-profile/bin/zsh"; fi
     '';
 };
 #+end_src
 
-** Starship
+*** Starship
 Starship is my terminal prompt of choice - what can I say, it's absolutely incredible.
 #+name: hmStarship
 #+begin_src nix
@@ -129,13 +141,14 @@ programs.starship = {
 };
 #+end_src
 
-** Global Changes
+** Misc Changes
 *** Enabling VirtualEnvWrapper
 
 #+name: venvWrapperConf
 #+begin_src nix
 source "${pkgs.python39Packages.virtualenvwrapper.outPath}/bin/virtualenvwrapper.sh"
 #+end_src
+
 
 * Editors
 While I normally use emacs for large-scale projects, I do like to use neovim for quick edits.

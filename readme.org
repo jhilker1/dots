@@ -30,7 +30,7 @@ First I need to set up metadata for home-manager to be able to run properly.
   programs.home-manager.enable = true;
   targets.genericLinux.enable = true;
   <<hm-packages>>
-  <<hm-shells>>
+  <<hm- shells>>
   <<hm-editors>>
   <<hm-git>>
   <<hm-gpg>>
@@ -45,16 +45,21 @@ home.packages = with pkgs; [
     stow
     hugo
     neofetch
+    jq
+    <<hmPython>>
   ];
-
 #+end_src
-
-** Emacs
-While I enable emacs and the emacs daemon here, I much prefer to maintain that config in its own file.
-#+name: hm-emacs
+** Language Configuration
+*** Python
+I love working with python; but I've found that maintaining dependencies can be a pain. While I normally like to keep a few global packages (such as numpy/pandas, matplotlib, fontforge, and flask), I much prefer to use something like virtualenvwrapper to maintain environments for each project.
+#+name: hmPython
 #+begin_src nix
-programs.emacs.enable = true;
-services.emacs.enable = true;
+(python39.withPackages(p: with p; [
+  fontforge
+  numpy
+  pandas
+  virtualenvwrapper
+]))
 #+end_src
 
 * Shell Configuration

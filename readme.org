@@ -46,6 +46,7 @@ home.packages = with pkgs; [
     hugo
     neofetch
     jq
+    docker
     <<hmPython>>
   ];
 #+end_src
@@ -60,8 +61,10 @@ I love working with python; but I've found that maintaining dependencies can be 
   numpy
   pandas
   virtualenvwrapper
+  pip
 ]))
 #+end_src
+
 
 * Shell Configuration
 I use ZSH for my day-to-day shell. However, because I'm currently using WSL2, I wanted to be able to manage bash as well. I merely enable bash integration here, though I want to set up autoCD as well, since I tend to use that as well as FZF-marks.
@@ -92,6 +95,10 @@ programs.zsh = {
   enable = true;
   enableSyntaxHighlighting = true;
   enableAutosuggestions = true;
+  autocd = true;
+  initExtra = ''
+    <<venvWrapperConf>>
+  '';
 };
 #+end_src
 
@@ -102,10 +109,12 @@ Although I normally use ZSH, sometimes I might want or need to use bash for a si
 programs.bash = {
   enable = true;
   initExtra = ''
+    <<venvWrapperConf>>
     if [[ -e  "$HOME/.nix-profile/bin/zsh" ]]; then exec "~/.nix-profile/bin/zsh"; fi
     '';
 };
 #+end_src
+
 ** Starship
 Starship is my terminal prompt of choice - what can I say, it's absolutely incredible.
 #+name: hmStarship
@@ -118,6 +127,14 @@ programs.starship = {
     line_break.disabled = true;
   };
 };
+#+end_src
+
+** Global Changes
+*** Enabling VirtualEnvWrapper
+
+#+name: venvWrapperConf
+#+begin_src nix
+source "${pkgs.python39Packages.virtualenvwrapper.outPath}/bin/virtualenvwrapper.sh"
 #+end_src
 
 * Editors

@@ -1,5 +1,151 @@
 #+title: Dotfiles
-#+property: header-args:nix :tangle ~/.config/nixpkgs/home.nix
+#+property: header-args :noweb yes
+#+property: header-args:nix :tangle no
 
 
 These are my "mostly literate" dotfiles. I'm currently using a mix of GNU Stow to manage the larger dotfiles (such as my Qtile config and my Doom Emacs config), while I use [[github:nix-community/home-manager][Home-Manager]] to manage things such as my alacritty config.
+
+First I need to set up metadata for home-manager to be able to run properly.
+#+name: hm-core
+#+begin_src nix :tangle ~/.config/nixpkgs/home.nix
+{ config, pkgs, ... }:
+
+{
+  # Home Manager needs a bit of information about you and the
+  # paths it should manage.
+  home.username = "jhilker";
+  home.homeDirectory = "/home/jhilker";
+
+  # This value determines the Home Manager release that your
+  # configuration is compatible with. This helps avoid breakage
+  # when a new Home Manager release introduces backwards
+  # incompatible changes.
+  #
+  # You can update Home Manager without changing this value. See
+  # the Home Manager release notes for a list of state version
+  # changes in each release.
+  home.stateVersion = "22.05";
+
+  # Let Home Manager install and manage itself.
+  programs.home-manager.enable = true;
+  targets.genericLinux.enable = true;
+  <<hm-packages>>
+  <<hm-shells>>
+  <<hm-editors>>
+  <<hm-git>>
+  <<hm-gpg>>
+}
+#+end_src
+
+* Packages
+I have several packages I'd like to install - namely GNU Stow, Hugo, and neofetch, though as I install more I will add them here.
+#+name: hm-packages
+#+begin_src nix
+home.packages = with pkgs; [
+    stow
+    hugo
+    neofetch
+  ];
+
+#+end_src
+
+** Emacs
+While I enable emacs and the emacs daemon here, I much prefer to maintain that config in its own file.
+#+name: hm-emacs
+#+begin_src nix
+programs.emacs.enable = true;
+services.emacs.enable = true;
+#+end_src
+
+* Shell Configuration
+I use ZSH for my day-to-day shell. However, because I'm currently using WSL2, I wanted to be able to manage bash as well. I merely enable bash integration here, though I want to set up autoCD as well, since I tend to use that as well as FZF-marks.
+#+name: hm-shells
+#+begin_src nix
+<<hmFzf>>
+<<hmZsh>>
+<<hmBash>>
+<<hmStarship>>
+#+end_src
+
+** FZF
+
+#+name: hmFzf
+#+begin_src nix
+programs.fzf = {
+    enable = true;
+    enableBashIntegration = true;
+    enableZshIntegration = true;
+};
+#+end_src
+
+** ZSH
+I prefer to use ZSH over Bash because of syntax highlighting and autosuggestions.
+#+name: hmZsh
+#+begin_src nix
+programs.zsh = {
+  enable = true;
+  enableSyntaxHighlighting = true;
+  enableAutosuggestions = true;
+};
+#+end_src
+
+** Starship
+Starship is my terminal prompt of choice - what can I say, it's absolutely incredible.
+#+name: hmStarship
+#+begin_src nix
+programs.starship = {
+  enable = true;
+  enableBashIntegration = true;
+  enableZshIntegration = true;
+  settings = {
+    line_break.disabled = true;
+  };
+};
+#+end_src
+
+* Editors
+While I normally use emacs for large-scale projects, I do like to use neovim for quick edits.
+#+name: hm-editors
+#+begin_src nix
+programs.emacs.enable = true;
+services.emacs.enable = true;
+<<hm-neovim>>
+#+end_src
+** Neovim
+
+* Git
+Is there really that much to say about this config? It's not that fancy.
+#+name: hm-git
+#+begin_src nix
+programs.git = {
+  enable = true;
+  userName = "Jacob Hilker";
+  userEmail = "jacob.hilker2@gmail.com";
+  signing = {
+    key = "jacob.hilker2@gmail.com";
+    signByDefault = true;
+  };
+};
+#+end_src
+
+
+* GPG
+I use gpg to sign all of my git commits and to encrypt sensitive files.
+#+name: hm-gpg
+#+begin_src nix
+programs.gpg.enable = true;
+<<hm-gpg-agent>>
+#+end_src
+** GPG-Agent
+Howver, although I love gpg, I don't want to enter a password every 10 minutes - I'd much rather enter the password once for the day and enable that.
+#+name: hm-gpg-agent
+#+begin_src nix
+services.gpg-agent = {
+  enable = true;
+  enableBashIntegration = true;
+  enableZshIntegration = true;
+  enableSshSupport = true;
+  defaultCacheTtl = 86400;
+  defaultCacheTtlSsh = 86400;
+};
+#+end_src

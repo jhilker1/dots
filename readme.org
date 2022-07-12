@@ -193,9 +193,18 @@ programs.git = {
     key = "jacob.hilker2@gmail.com";
     signByDefault = true;
   };
+  <<hm-git-delta>>
 };
 #+end_src
 
+** Delta
+I like to use delta for viewing diffs.
+#+name: hm-git-delta
+#+begin_src nix
+delta = {
+  enable = true;
+};
+#+end_src
 
 * GPG
 I use gpg to sign all of my git commits and to encrypt sensitive files.

@@ -2,6 +2,7 @@
 #+property: header-args :noweb yes
 #+property: header-args:nix :tangle no
 #+property: header-args:conf-yaml :tangle ~/.fzf-marks
+#+startup: fold
 
 These are my "mostly literate" dotfiles. I'm currently using a mix of GNU Stow to manage the larger dotfiles (such as my Qtile config and my Doom Emacs config), while I use [[github:nix-community/home-manager][Home-Manager]] to manage things such as my alacritty config.
 

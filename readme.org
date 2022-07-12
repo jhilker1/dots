@@ -46,7 +46,6 @@ home.packages = with pkgs; [
     hugo
     neofetch
     jq
-    docker
     sqlite
     <<hmPython>>
   ];
@@ -61,6 +60,7 @@ I love working with python, but I've found that maintaining dependencies can be 
   fontforge
   numpy
   pandas
+  flask
   virtualenvwrapper
   pip
 ]))
@@ -109,6 +109,7 @@ programs.zsh = {
   initExtra = ''
     <<venvWrapperConf>>
     source ~/.local/fzf-marks/fzf-marks.plugin.zsh
+    <<runDocker>>
   '';
 };
 #+end_src
@@ -122,6 +123,7 @@ programs.bash = {
   initExtra = ''
     <<venvWrapperConf>>
     source ~/.local/fzf-marks/fzf-marks.plugin.bash
+    <<runDocker>>
     if [[ -e  "$HOME/.nix-profile/bin/zsh" ]]; then exec "~/.nix-profile/bin/zsh"; fi
     '';
 };
@@ -149,6 +151,16 @@ programs.starship = {
 source "${pkgs.python39Packages.virtualenvwrapper.outPath}/bin/virtualenvwrapper.sh"
 #+end_src
 
+*** Enabling Docker
+I want to enable docker on startup.
+#+name: runDocker
+#+begin_src sh
+RUNNING=`ps aux | grep dockerd | grep -v grep`
+if [ -z "$RUNNING" ]; then
+    sudo dockerd > /dev/null 2>&1 &
+    disown
+fi
+#+end_src
 
 * Editors
 While I normally use emacs for large-scale projects, I do like to use neovim for quick edits.
@@ -159,6 +171,15 @@ services.emacs.enable = true;
 <<hm-neovim>>
 #+end_src
 ** Neovim
+I want to enable neovim here.
+#+name: hm-neovim
+#+begin_src nix
+programs.neovim = {
+    enable = true;
+    viAlias = true;
+    vimAlias = true;
+};
+#+end_src
 
 * Git
 Is there really that much to say about this config? It's not that fancy.

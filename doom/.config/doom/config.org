@@ -39,7 +39,7 @@
        doom              ; what makes DOOM look the way it does
        doom-dashboard    ; a nifty splash screen for Emacs
        ;;doom-quit         ; DOOM quit-message prompts when you quit Emacs
-       ;;(emoji +unicode)  ; 🙂
+       (emoji +unicode +github)  ; 🙂
        hl-todo           ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
        ;;hydra
        ;;indent-guides     ; highlighted indent columns
@@ -93,7 +93,7 @@
 
        :tools
        ;;ansible
-       ;;biblio            ; Writes a PhD for you (citation needed)
+       biblio            ; Writes a PhD for you (citation needed)
        ;;debugger          ; FIXME stepping through code, to help you add bugs
        ;;direnv
        ;;docker
@@ -202,7 +202,19 @@
 
 #+end_src
 
+#+RESULTS: doom-modules
+
 * UI Changes
 #+begin_src emacs-lisp
 (setq doom-font (font-spec :name "Josevka Code" :size 16))
+#+end_src
+
+* Org Mode
+
+** Literate Programming
+#+begin_src emacs-lisp
+(after! org
+  (add-to-list 'org-babel-default-header-args
+               '((:noweb . "yes")
+                 (:mkdirp . "yes"))))
 #+end_src

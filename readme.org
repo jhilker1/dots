@@ -46,15 +46,29 @@ home.packages = with pkgs; [
     hugo
     neofetch
     jq
-    sqlite
-    <<hmPython>>
+    <<hmDoomPkgs>>
+    <<hmPythonPkgs>>
   ];
 #+end_src
-
+** Doom Emacs Requirements
+I need to add doom emacs' requirements here.
+#+name: hmDoomPkgs
+#+begin_src nix
+sqlite
+binutils
+(ripgrep.override { withPCRE2 = true; })
+gnutls
+fd
+imagemagick
+zstd
+nodePackages.javascript-typescript-langserver
+editorconfig-core-c
+emacs-all-the-icons-fonts
+#+end_src
 ** Language Configuration
 *** Python
 I love working with python, but I've found that maintaining dependencies can be a pain. While I normally like to keep a few global packages (such as numpy/pandas, matplotlib, fontforge, and flask), I much prefer to use something like virtualenvwrapper to maintain environments for each project.
-#+name: hmPython
+#+name: hmPythonPkgs
 #+begin_src nix
 (python39.withPackages(p: with p; [
   fontforge
@@ -76,7 +90,8 @@ I use ZSH for my day-to-day shell. However, because I'm currently using WSL2, I 
 <<hmBash>>
 <<hmStarship>>
 #+end_src
-
+** Variables
+I have a few global chan
 ** Programs
 *** FZF
 #+name: hmFzf
@@ -193,13 +208,22 @@ programs.git = {
     key = "jacob.hilker2@gmail.com";
     signByDefault = true;
   };
-  <<hm-git-delta>>
+  <<hmGitDelta>>
+  <<hmGitExtra>>
+};
+#+end_src
+** Extra Configuration
+I like to use "main" as my default branch rather than "master".
+#+name: hmGitExtra
+#+begin_src nix
+extraConfig = {
+  init.defaultBranch = "main";
 };
 #+end_src
 
 ** Delta
 I like to use delta for viewing diffs.
-#+name: hm-git-delta
+#+name: hmGitDelta
 #+begin_src nix
 delta = {
   enable = true;

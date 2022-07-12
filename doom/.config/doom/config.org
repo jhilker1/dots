@@ -212,9 +212,3 @@
 * Org Mode
 
 ** Literate Programming
-#+begin_src emacs-lisp
-(after! org
-  (add-to-list 'org-babel-default-header-args
-               '((:noweb . "yes")
-                 (:mkdirp . "yes"))))
-#+end_src

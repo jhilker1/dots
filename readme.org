@@ -91,8 +91,31 @@ I use ZSH for my day-to-day shell. However, because I'm currently using WSL2, I 
 <<hmBash>>
 <<hmStarship>>
 #+end_src
-** Variables
-I have a few global chan
+** Functions
+I have a few global functions I want to be available - namely FZF related functions with Docker, such as building my Iosevka fonts, creating a gitignore, etc.
+*** Build Custom Iosevka
+#+name: hm-build-iosevka
+#+begin_src sh
+function buildIosevka {
+  IOSEVKA_VER="$(awk 'NR==1{print $1}' $HOME/josevka/private-build-plans.toml)"
+  TO_BUILD="$(rg '\[buildPlans.(josevka[a-z-]{0,})\]' $HOME/josevka/private-build-plans.toml | sed 's/]//g' | cut -d'.' -f2 | fzf)"
+  # docker run -e "FONT_VERSION=$IOSEVKA_VER" "~/josevka":/build avivace/iosevka-build
+  if  [[ "$TO_BUILD" == *book* ]]; then
+    printf "Don't patch font %s\n" "$TO_BUILD"
+  else
+      if [[ "$TO_BUILD" == *mono* ]]; then
+          ## docker run -v "$HOME/josevka/dist/$TO_BUILD":/in -v "$HOME/josekva/patched/$TO_BUILD":/out -c -s -l -q --no-progressbars
+          printf "Patch font %s with monospace\n" "$TO_BUILD"
+      else
+          ## docker run -v "$HOME/josevka/dist/$TO_BUILD":/in -v "$HOME/josekva/patched/$TO_BUILD":/out -c -l -q --no-progressbars --careful
+          printf "Patch font %s without monospace\n" "$TO_BUILD"
+      fi
+  fi
+
+}
+#+end_src
+
+
 ** Programs
 *** FZF
 #+name: hmFzf
@@ -126,6 +149,7 @@ programs.zsh = {
     <<venvWrapperConf>>
     source ~/.local/fzf-marks/fzf-marks.plugin.zsh
     <<runDocker>>
+    <<hm-build-iosevka>>
   '';
 };
 #+end_src
@@ -140,7 +164,7 @@ programs.bash = {
     <<venvWrapperConf>>
     source ~/.local/fzf-marks/fzf-marks.plugin.bash
     <<runDocker>>
-    if [[ -e  "$HOME/.nix-profile/bin/zsh" ]]; then exec "~/.nix-profile/bin/zsh"; fi
+    <<hm-build-iosevka>>
     '';
 };
 #+end_src

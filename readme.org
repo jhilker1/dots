@@ -97,21 +97,13 @@ I have a few global functions I want to be available - namely FZF related functi
 #+name: hm-build-iosevka
 #+begin_src sh
 function buildIosevka {
-  IOSEVKA_VER="$(awk 'NR==1{print $1}' $HOME/josevka/private-build-plans.toml)"
-  TO_BUILD="$(rg '\[buildPlans.(josevka[a-z-]{0,})\]' $HOME/josevka/private-build-plans.toml | sed 's/]//g' | cut -d'.' -f2 | fzf)"
-  # docker run -e "FONT_VERSION=$IOSEVKA_VER" "~/josevka":/build avivace/iosevka-build
-  if  [[ "$TO_BUILD" == *book* ]]; then
-    printf "Don't patch font %s\n" "$TO_BUILD"
-  else
-      if [[ "$TO_BUILD" == *mono* ]]; then
-          ## docker run -v "$HOME/josevka/dist/$TO_BUILD":/in -v "$HOME/josekva/patched/$TO_BUILD":/out -c -s -l -q --no-progressbars
-          printf "Patch font %s with monospace\n" "$TO_BUILD"
-      else
-          ## docker run -v "$HOME/josevka/dist/$TO_BUILD":/in -v "$HOME/josekva/patched/$TO_BUILD":/out -c -l -q --no-progressbars --careful
-          printf "Patch font %s without monospace\n" "$TO_BUILD"
-      fi
+  if  [[! $(pwd) = "/home/jhilker/josevka"]]; then
+    cd /home/jhilker/josevka
   fi
 
+  IOSEVKA_VER="$(awk 'NR==1{print $1}' $HOME/josevka/private-build-plans.toml)"
+  TO_BUILD="$(rg '\[buildPlans.(josevka[a-z-]{0,})\]' $HOME/josevka/private-build-plans.toml | sed 's/]//g' | cut -d'.' -f2 | fzf)"
+  docker run -e FONT_VERSION=$IOSEVKA_VER -it -v $(pwd):/build avivace/iosevka-build ttf::$TO_BUILD
 }
 #+end_src
 

@@ -137,11 +137,13 @@ programs.zsh = {
   enableSyntaxHighlighting = true;
   enableAutosuggestions = true;
   autocd = true;
+  shellAliases = {
+    ref = "source ~/.zshrc";
+  };
   initExtra = ''
     <<venvWrapperConf>>
     source ~/.local/fzf-marks/fzf-marks.plugin.zsh
     <<runDocker>>
-    <<hm-build-iosevka>>
   '';
 };
 #+end_src
@@ -152,11 +154,13 @@ Although I normally use ZSH, sometimes I might want or need to use bash for a si
 #+begin_src nix
 programs.bash = {
   enable = true;
+  shellAliases = {
+    ref = "source ~/.bashrc";
+  };
   initExtra = ''
     <<venvWrapperConf>>
     source ~/.local/fzf-marks/fzf-marks.plugin.bash
     <<runDocker>>
-    <<hm-build-iosevka>>
     '';
 };
 #+end_src

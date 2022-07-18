@@ -8,7 +8,7 @@ These are my "mostly literate" dotfiles. I'm currently using a mix of GNU Stow t
 
 First I need to set up metadata for home-manager to be able to run properly.
 #+name: hm-core
-#+begin_src nix :tangle home.nix
+#+begin_src nix :tangle ~/.config/nixpkgs/home.nix
 { config, pkgs, ... }:
 
 {

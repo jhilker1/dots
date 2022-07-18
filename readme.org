@@ -209,12 +209,19 @@ if [ -z "$RUNNING" ]; then
     disown
 fi
 #+end_src
+
 ** Global Variables
 #+name: hmSessVars
 #+begin_src nix
 home.sessionVariables = {
   WSLHOME = "/mnt/c/Users/camoh/";
 };
+#+end_src
+
+** Aliases
+I keep a few shell aliases here.
+#+begin_src nix
+
 #+end_src
 
 * Editors

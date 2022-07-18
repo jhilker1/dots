@@ -1,6 +1,6 @@
 #+title: Doom Emacs Config
 #+property: header-args :noweb yes
-#+property: header-args:emacs-lisp :tangle ~/.config/doom/config.el
+#+property: header-args:emacs-lisp :tangle config.el
 
 * Modules
 #+name: doom-modules
@@ -208,7 +208,7 @@
 
 * UI Changes
 #+begin_src emacs-lisp
-(setq doom-font (font-spec :name "Josevka Code" :size 16))
+;(setq doom-font (font-spec :name "Josevka Code" :size 16))
 #+end_src
 
 * Org Mode

@@ -47,6 +47,7 @@ home.packages = with pkgs; [
     hugo
     neofetch
     jq
+    git-crypt
     <<hmDoomPkgs>>
     <<hmPythonPkgs>>
     <<hmNode>>
@@ -231,6 +232,7 @@ I keep a few shell aliases here.
 #+begin_src nix
 mypy = "~/.nix-profile/bin/python3 $@";
 hms = "home-manager switch";
+doom = "~/.emacs.d/bin/doom $@";
 #+end_src
 
 * Editors

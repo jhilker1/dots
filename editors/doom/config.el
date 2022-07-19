@@ -1,5 +1,5 @@
-(setq doom-theme 'doom-gruvbox
-      doom-font (font-spec :name "Josevka" :size 17))
+(setq doom-theme 'doom-gruvbox)
+      ;;doom-font (font-spec :name "Josevka" :size 17))
 
 (after! org-roam
   (setq org-roam-directory "/mnt/c/Users/camoh/Dropbox/roam"

@@ -51,8 +51,10 @@ home.packages = with pkgs; [
     <<hmPythonPkgs>>
     <<hmNode>>
     go
+  #  ncspot
   ];
 #+end_src
+
 ** Doom Emacs Requirements
 I need to add doom emacs' requirements here.
 #+name: hmDoomPkgs
@@ -68,6 +70,7 @@ nodePackages.javascript-typescript-langserver
 editorconfig-core-c
 emacs-all-the-icons-fonts
 #+end_src
+
 ** Language Configuration
 *** Python
 I love working with python, but I've found that maintaining dependencies can be a pain. While I normally like to keep a few global packages (such as numpy/pandas, matplotlib, fontforge, and flask), I much prefer to use something like virtualenvwrapper to maintain environments for each project.
@@ -91,6 +94,7 @@ nodejs
 nodePackages.npm
 nodePackages.tailwindcss
 nodePackages.postcss-cli
+nodePackages.typescript
 #+end_src
 
 * Shell Configuration
@@ -151,6 +155,7 @@ programs.zsh = {
   autocd = true;
   shellAliases = {
     ref = "source ~/.zshrc";
+    <<hmAliases>>
   };
   initExtra = ''
     <<venvWrapperConf>>
@@ -168,11 +173,13 @@ programs.bash = {
   enable = true;
   shellAliases = {
     ref = "source ~/.bashrc";
+    <<hmAliases>>
   };
   initExtra = ''
     <<venvWrapperConf>>
     source ~/.local/fzf-marks/fzf-marks.plugin.bash
     <<runDocker>>
+    zsh; exit
     '';
 };
 #+end_src
@@ -220,8 +227,10 @@ home.sessionVariables = {
 
 ** Aliases
 I keep a few shell aliases here.
+#+name: hmAliases
 #+begin_src nix
-
+mypy = "~/.nix-profile/bin/python3 $@";
+hms = "home-manager switch";
 #+end_src
 
 * Editors
@@ -295,5 +304,14 @@ services.gpg-agent = {
   enableSshSupport = true;
   defaultCacheTtl = 86400;
   defaultCacheTtlSsh = 86400;
+};
+#+end_src
+
+* NCSpot
+Ncspot has quickly become my terminal-based spotify client of choice. Sure, I /technically/ have the graphical client, but why use that when ncspot is so much more simpler?
+#+name: hm-ncspot
+#+begin_src nix
+programs.ncspot = {
+  enable = true;
 };
 #+end_src

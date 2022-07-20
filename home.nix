@@ -24,6 +24,9 @@
       hugo
       neofetch
       jq
+      git-crypt
+      go
+    #  ncspot
       sqlite
       binutils
       (ripgrep.override { withPCRE2 = true; })
@@ -46,7 +49,8 @@
       nodePackages.npm
       nodePackages.tailwindcss
       nodePackages.postcss-cli
-      go
+      nodePackages.typescript
+      
     ];
   home.sessionVariables = {
     WSLHOME = "/mnt/c/Users/camoh/";
@@ -63,30 +67,48 @@
     autocd = true;
     shellAliases = {
       ref = "source ~/.zshrc";
+      mypy = "~/.nix-profile/bin/python3 $@";
+      hms = "home-manager switch";
+      doom = "~/.emacs.d/bin/doom $@";
+      ls = "${pkgs.exa.outPath}/bin/exa -alh --git-ignore";
+      ll = "${pkgs.exa.outPath}/bin/exa -alh";
     };
     initExtra = ''
       source "${pkgs.python39Packages.virtualenvwrapper.outPath}/bin/virtualenvwrapper.sh"
-      source ~/.local/fzf-marks/fzf-marks.plugin.zsh
+      ## source ~/.local/fzf-marks/fzf-marks.plugin.zsh
       RUNNING=`ps aux | grep dockerd | grep -v grep`
       if [ -z "$RUNNING" ]; then
           sudo dockerd > /dev/null 2>&1 &
           disown
       fi
+  function toWorkOn(){
+      project="$(lsvirtualenv -b | fzf)"
+      echo $project
+  }
     '';
   };
   programs.bash = {
     enable = true;
     shellAliases = {
       ref = "source ~/.bashrc";
+      mypy = "~/.nix-profile/bin/python3 $@";
+      hms = "home-manager switch";
+      doom = "~/.emacs.d/bin/doom $@";
+      ls = "${pkgs.exa.outPath}/bin/exa -alh --git-ignore";
+      ll = "${pkgs.exa.outPath}/bin/exa -alh";
     };
     initExtra = ''
       source "${pkgs.python39Packages.virtualenvwrapper.outPath}/bin/virtualenvwrapper.sh"
-      source ~/.local/fzf-marks/fzf-marks.plugin.bash
+      ## source ~/.local/fzf-marks/fzf-marks.plugin.bash
       RUNNING=`ps aux | grep dockerd | grep -v grep`
       if [ -z "$RUNNING" ]; then
           sudo dockerd > /dev/null 2>&1 &
           disown
       fi
+      function toWorkOn(){
+          project="$(lsvirtualenv -b | fzf)"
+          echo $project
+      }
       '';
   };
   programs.starship = {

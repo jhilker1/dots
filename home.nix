@@ -53,7 +53,7 @@
       
     ];
   home.sessionVariables = {
-    WSLHOME = "/mnt/c/Users/camoh/";
+    WSLHOME = "/mnt/c/Users/camoh";
   };
   programs.fzf = {
       enable = true;
@@ -70,8 +70,9 @@
       mypy = "~/.nix-profile/bin/python3 $@";
       hms = "home-manager switch";
       doom = "~/.emacs.d/bin/doom $@";
-      ls = "${pkgs.exa.outPath}/bin/exa -alh --git-ignore";
+      ls = "${pkgs.exa.outPath}/bin/exa -alh --git-ignore --icons";
       ll = "${pkgs.exa.outPath}/bin/exa -alh";
+      cat = "${pkgs.bat.outPath}/bin/bat $@";
     };
     initExtra = ''
       source "${pkgs.python39Packages.virtualenvwrapper.outPath}/bin/virtualenvwrapper.sh"
@@ -94,8 +95,9 @@
       mypy = "~/.nix-profile/bin/python3 $@";
       hms = "home-manager switch";
       doom = "~/.emacs.d/bin/doom $@";
-      ls = "${pkgs.exa.outPath}/bin/exa -alh --git-ignore";
+      ls = "${pkgs.exa.outPath}/bin/exa -alh --git-ignore --icons";
       ll = "${pkgs.exa.outPath}/bin/exa -alh";
+      cat = "${pkgs.bat.outPath}/bin/bat $@";
     };
     initExtra = ''
       source "${pkgs.python39Packages.virtualenvwrapper.outPath}/bin/virtualenvwrapper.sh"

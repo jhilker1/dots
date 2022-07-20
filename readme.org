@@ -242,7 +242,7 @@ fi
 #+name: hmSessVars
 #+begin_src nix
 home.sessionVariables = {
-  WSLHOME = "/mnt/c/Users/camoh/";
+  WSLHOME = "/mnt/c/Users/camoh";
 };
 #+end_src
 
@@ -253,8 +253,9 @@ I keep a few shell aliases here.
 mypy = "~/.nix-profile/bin/python3 $@";
 hms = "home-manager switch";
 doom = "~/.emacs.d/bin/doom $@";
-ls = "${pkgs.exa.outPath}/bin/exa -alh --git-ignore";
+ls = "${pkgs.exa.outPath}/bin/exa -alh --git-ignore --icons";
 ll = "${pkgs.exa.outPath}/bin/exa -alh";
+cat = "${pkgs.bat.outPath}/bin/bat $@";
 #+end_src
 
 * Editors
@@ -331,12 +332,20 @@ services.gpg-agent = {
 };
 #+end_src
 
-* NCSpot
-Ncspot has quickly become my terminal-based spotify client of choice. Sure, I /technically/ have the graphical client, but why use that when ncspot is so much more simpler?
+* Media Programs
+** NCSpot
+Ncspot has quickly become my terminal-based spotify client of choice. Sure, I /technically/ have the graphical client, but why use that when ncspot is so much more simpler? While I don't use ncspot on WSL, on my lower-end machines I feel as though it's the simplest choice to configure and set up.
 #+name: hm-ncspot
 #+begin_src nix
 programs.ncspot = {
   enable = true;
+  settings = {
+    shuffle = true;
+    notify = true;
+    use_nerdfont = true;
+    <<ncspotTheme>>
+    #<<ncspotKeys>>
+  };
 };
 #+end_src
 
@@ -913,6 +922,6 @@ This is my config file to Windows Terminal - while I'm not tangling it right now
 }
 #+end_src
 
-* Footnotes
 
+* Footnotes
 [fn:1] The docker container for iosevka builds is currently broken for me, with an ELIFECYCLE error - I've reached out for comment to see if it's wrong with my setup or with the container, which is why I am not including it in my =~/.bashrc= or =~/.zshrc= yet.

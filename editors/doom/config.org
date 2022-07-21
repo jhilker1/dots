@@ -1,4 +1,4 @@
-#+title: Doom Emacs Config
+#+title: Doom Emacs Configuration
 #+property: header-args :noweb yes
 #+property: header-args:emacs-lisp :tangle config.el
 
@@ -73,7 +73,7 @@
 
        :checkers
        syntax              ; tasing you for every semicolon you forget
-       ;(spell +aspell) ; tasing you for misspelling mispelling
+       (spell +aspell) ; tasing you for misspelling mispelling
        ;;grammar           ; tasing grammar mistake every you make
 
        :tools

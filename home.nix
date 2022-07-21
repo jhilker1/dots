@@ -37,6 +37,11 @@
       nodePackages.javascript-typescript-langserver
       editorconfig-core-c
       emacs-all-the-icons-fonts
+      (aspellWithDicts (dicts: with dicts; [
+        en
+        en-computers
+        en-science
+        grc]))
       (python39.withPackages(p: with p; [
         fontforge
         numpy
@@ -73,6 +78,7 @@
       ls = "${pkgs.exa.outPath}/bin/exa -alh --git-ignore --icons";
       ll = "${pkgs.exa.outPath}/bin/exa -alh";
       cat = "${pkgs.bat.outPath}/bin/bat $@";
+      notify-send = "wsl-notify-send.exe $@";
     };
     initExtra = ''
       source "${pkgs.python39Packages.virtualenvwrapper.outPath}/bin/virtualenvwrapper.sh"
@@ -98,6 +104,7 @@
       ls = "${pkgs.exa.outPath}/bin/exa -alh --git-ignore --icons";
       ll = "${pkgs.exa.outPath}/bin/exa -alh";
       cat = "${pkgs.bat.outPath}/bin/bat $@";
+      notify-send = "wsl-notify-send.exe $@";
     };
     initExtra = ''
       source "${pkgs.python39Packages.virtualenvwrapper.outPath}/bin/virtualenvwrapper.sh"

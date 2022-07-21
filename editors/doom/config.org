@@ -86,7 +86,10 @@
        ;;ein               ; tame Jupyter notebooks with emacs
        (eval +overlay)     ; run code, run (also, repls)
        ;;gist              ; interacting with github gists
-       lookup              ; navigate your code and its documentation
+       (lookup              ; navigate your code and its documentation
+        +dictionary
+        +docsets
+        +offline)
        lsp               ; M-x vscode
        magit             ; a git porcelain for Emacs
        make              ; run make tasks from Emacs
@@ -382,7 +385,7 @@ Because I have so many use cases for Org-roam, Instead of keeping a bunch of cap
 #+end_src
 
 ** Long-Form Writing
-I like to use a package called binder.el to manage longer writing projects.
+I like to use a package called =binder.el= to manage longer writing projects.
 #+begin_src emacs-lisp :tangle packages.el
 (package! binder)
 #+end_src

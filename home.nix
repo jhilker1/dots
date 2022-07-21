@@ -49,6 +49,7 @@
         flask
         virtualenvwrapper
         pip
+        python-lsp-server
       ]))
       nodejs
       nodePackages.npm
@@ -59,6 +60,7 @@
     ];
   home.sessionVariables = {
     WSLHOME = "/mnt/c/Users/camoh";
+    PROJECT_HOME="$HOME/Devel/python/";
   };
   programs.fzf = {
       enable = true;
@@ -79,6 +81,7 @@
       ll = "${pkgs.exa.outPath}/bin/exa -alh";
       cat = "${pkgs.bat.outPath}/bin/bat $@";
       notify-send = "wsl-notify-send.exe $@";
+      spicetify = "spicetify.exe $@";
     };
     initExtra = ''
       source "${pkgs.python39Packages.virtualenvwrapper.outPath}/bin/virtualenvwrapper.sh"
@@ -105,6 +108,7 @@
       ll = "${pkgs.exa.outPath}/bin/exa -alh";
       cat = "${pkgs.bat.outPath}/bin/bat $@";
       notify-send = "wsl-notify-send.exe $@";
+      spicetify = "spicetify.exe $@";
     };
     initExtra = ''
       source "${pkgs.python39Packages.virtualenvwrapper.outPath}/bin/virtualenvwrapper.sh"

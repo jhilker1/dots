@@ -4,7 +4,7 @@
 #+property: header-args:conf-yaml :tangle ~/.fzf-marks
 #+startup: fold
 
-These are my "mostly literate" dotfiles. I'm currently using a mix of symlinks to manage the larger dotfiles (such as my Qtile Doom Emacs configs), while I use [[github:nix-community/home-manager][Home-Manager]] to manage things such as my alacritty config.
+These are my "mostly literate" dotfiles. I'm currently using a mix of symlinks to manage the larger dotfiles (such as my Qtile Doom Emacs config files), while I use [[github:nix-community/home-manager][Home-Manager]] to manage things such as my alacritty config.
 
 First I need to set up metadata for home-manager to be able to run properly.
 #+name: hm-core
@@ -80,7 +80,7 @@ emacs-all-the-icons-fonts
 
 ** Language Packages
 *** Python
-I love working with python, but I've found that maintaining dependencies can be a pain. While I normally like to keep a few global packages (such as numpy/pandas, matplotlib, fontforge, and flask), I much prefer to use something like virtualenvwrapper to maintain environments for each project.
+I love working with python, but I've found that maintaining dependencies can be a pain. While I normally like to keep a few global packages (such as =numpy=, =pandas=, =matplotlib=, =fontforge=, and =flask=), I much prefer to use something like =virtualenvwrapper= to maintain environments for each project.
 #+name: hmPythonPkgs
 #+begin_src nix
 (python39.withPackages(p: with p; [
@@ -90,11 +90,12 @@ I love working with python, but I've found that maintaining dependencies can be 
   flask
   virtualenvwrapper
   pip
+  python-lsp-server
 ]))
 #+end_src
 
-*** NodeJS
-I use nodeJS for a variety of things.
+*** Node
+I use Node JS for a variety of things.
 #+name: hmNode
 #+begin_src nix
 nodejs
@@ -120,6 +121,15 @@ I use ZSH for my day-to-day shell. However, because I'm currently using WSL2, I 
 <<hmZsh>>
 <<hmBash>>
 <<hmStarship>>
+#+end_src
+
+** Global Variables
+#+name: hmSessVars
+#+begin_src nix
+home.sessionVariables = {
+  WSLHOME = "/mnt/c/Users/camoh";
+  PROJECT_HOME="$HOME/Devel/python/";
+};
 #+end_src
 
 ** Functions
@@ -243,14 +253,6 @@ if [ -z "$RUNNING" ]; then
 fi
 #+end_src
 
-** Global Variables
-#+name: hmSessVars
-#+begin_src nix
-home.sessionVariables = {
-  WSLHOME = "/mnt/c/Users/camoh";
-};
-#+end_src
-
 ** Aliases
 I keep a few shell aliases here.
 #+name: hmAliases
@@ -262,6 +264,7 @@ ls = "${pkgs.exa.outPath}/bin/exa -alh --git-ignore --icons";
 ll = "${pkgs.exa.outPath}/bin/exa -alh";
 cat = "${pkgs.bat.outPath}/bin/bat $@";
 notify-send = "wsl-notify-send.exe $@";
+spicetify = "spicetify.exe $@";
 #+end_src
 
 * Editors
@@ -318,14 +321,14 @@ delta = {
 #+end_src
 
 * GPG
-I use gpg to sign all of my git commits and to encrypt sensitive files.
+I use GPG to sign all of my git commits and to encrypt sensitive files.
 #+name: hm-gpg
 #+begin_src nix
 programs.gpg.enable = true;
 <<hm-gpg-agent>>
 #+end_src
 ** GPG-Agent
-Howver, although I love gpg, I don't want to enter a password every 10 minutes - I'd much rather enter the password once for the day and enable that.
+However, although I love GPG, I don't want to enter a password every 10 minutes - I'd much rather enter the password once for the day and enable that.
 #+name: hm-gpg-agent
 #+begin_src nix
 services.gpg-agent = {

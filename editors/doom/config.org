@@ -425,3 +425,9 @@ I like to use a package called =binder.el= to manage longer writing projects.
 (use-package! ox-moderncv)
 (use-package! ox-hugocv)
 #+end_src
+
+* Languages
+** Python
+#+begin_src emacs-lisp :tangle packages.el
+(package! virtualenvwrapper)
+#+end_src

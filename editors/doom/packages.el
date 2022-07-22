@@ -38,3 +38,5 @@
 (when (featurep! :lang org +hugo)
   (package! ox-hugocv
     :recipe (:host gitlab :repo "jhilker/org-cv")))
+
+(package! virtualenvwrapper)

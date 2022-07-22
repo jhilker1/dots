@@ -42,6 +42,7 @@
         en-computers
         en-science
         grc]))
+      zlib
       (python39.withPackages(p: with p; [
         fontforge
         numpy

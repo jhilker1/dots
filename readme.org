@@ -113,7 +113,7 @@ I like to use exa as an ls replacement.
 #+end_src
 
 * Shell Configuration
-I use ZSH for my day-to-day shell. However, because I'm currently using WSL2, I wanted to be able to manage bash as well. I merely enable bash integration here, though I want to set up autoCD as well, since I tend to use that as well as FZF-marks.
+I use ZSH for my day-to-day shell. However, because I'm currently using WSL2, I wanted to be able to manage bash as well. I merely enable bash integration here, though I want to set up auto-cd as well, since I tend to use that as well as FZF-marks.
 #+name: hm-shells
 #+begin_src nix
 <<hmSessVars>>

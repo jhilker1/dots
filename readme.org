@@ -127,12 +127,15 @@ I use ZSH for my day-to-day shell. However, because I'm currently using WSL2, I 
 #+end_src
 
 *** Global Variables
+Since I am also using VcXserv as a graphical display, I'd like to be able to quickly launch my window manager of choice (Qtile), but I need to account for the fact that I need to use my windows machine as a display.
 #+name: hmSessVars
 #+begin_src nix
 home.sessionVariables = {
   WSLHOME = "/mnt/c/Users/camoh";
   PROJECT_HOME="$HOME/Devel/python/";
   LD_LIBRARY_PATH="$(nix eval nixpkgs#zlib.outPath --raw)/lib";
+  DISPLAY="$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0";
+  LIBGL_ALWAYS_INDIRECT = 1;
 };
 #+end_src
 
@@ -935,6 +938,9 @@ This is my config file to Windows Terminal - while I'm not tangling it right now
 }
 #+end_src
 
+** Desktop Programs
 
+** Overlays
+With VcXserv running as my xserver, I'd like to be able to quickly launch qtile.
 * Footnotes :noexport:
 [fn:1] The docker container for Iosevka builds is currently broken for me, with an ELIFECYCLE error - I've reached out for comment to see if it's wrong with my setup or with the container, which is why I am not including it in my =~/.bashrc= or =~/.zshrc= yet.

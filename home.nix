@@ -64,6 +64,8 @@
     WSLHOME = "/mnt/c/Users/camoh";
     PROJECT_HOME="$HOME/Devel/python/";
     LD_LIBRARY_PATH="$(nix eval nixpkgs#zlib.outPath --raw)/lib";
+    DISPLAY="$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0";
+    LIBGL_ALWAYS_INDIRECT = 1;
   };
   programs.fzf = {
       enable = true;

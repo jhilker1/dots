@@ -942,5 +942,10 @@ This is my config file to Windows Terminal - while I'm not tangling it right now
 
 ** Overlays
 With VcXserv running as my xserver, I'd like to be able to quickly launch qtile.
+#+name: hm-overlays
+#+begin_src nix
+
+#+end_src
+
 * Footnotes :noexport:
 [fn:1] The docker container for Iosevka builds is currently broken for me, with an ELIFECYCLE error - I've reached out for comment to see if it's wrong with my setup or with the container, which is why I am not including it in my =~/.bashrc= or =~/.zshrc= yet.

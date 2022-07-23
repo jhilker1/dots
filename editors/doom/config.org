@@ -213,7 +213,7 @@ I like to use childframes as much as I can, along with making my hydras prettier
   (hydra-posframe-mode t))
 #+end_src
 
-** Web Langs
+** Web Languages
 #+begin_src emacs-lisp :tangle packages.el
 (when (featurep! :lang web +lipsum)
   (package! lorem-ipsum))
@@ -228,7 +228,7 @@ I also want my tailwind server to work as an add-on.
   (setq lsp-tailwindcss-add-on-mode t))
 #+end_src
 
-* General Init
+* General Initialization
 #+begin_src emacs-lisp
 (setq user-full-name "Jacob Hilker"
       user-mail-address "jacob.hilker2@gmail.com")
@@ -408,10 +408,6 @@ I like to use a package called =binder.el= to manage longer writing projects. I 
 (package! binder)
 #+end_src
 
-#+begin_src emacs-lisp
-(after! ispell
-  (setq ispell-personal-dictionary "./.pws"))
-#+end_src
 
 
 *** Blogging with Hugo

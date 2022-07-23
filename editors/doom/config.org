@@ -347,6 +347,7 @@ I like to use org-mode to handle projects, tasks, and my calendar.
 One of the neatest things about org-mode is the ability to do "literate programming", where your documentation and your source code live in the same file. While I don't necessarily think it's the most useful application of programming, for something like a config file or teaching someone to code, it's a great idea.
 
 ** Note-taking with Org Roam
+I love using org-roam for maintaining notes and notebooks. However, I also like being able to visualize how my notes interact, and unlike a general ,
 #+begin_src emacs-lisp :tangle packages.el
 (when (featurep! :lang org +roam2)
   (package! vulpea)
@@ -358,15 +359,16 @@ One of the neatest things about org-mode is the ability to do "literate programm
 (after! org-roam
   (setq org-roam-directory "~/roam/"
         org-roam-db-location "~/.org-roam.db"
+        org-roam-db-autosync-mode t
         org-roam-completion-everywhere t)
+
   (cl-defmethod org-roam-node-namespace ((node org-roam-node))
     "Return the currently set namespace for the NODE."
     (let ((namespace (cdr (assoc-string "NAMESPACE" (org-roam-node-properties node)))))
       (if (string= namespace (file-name-base (org-roam-node-file node)))
           "" ; or return the current title, e.g. (org-roam-node-title node)
         (format "%s" namespace))))
-
-  (setq org-roam-node-display-template (concat "${namespace:15} ${title:*}" (propertize "${doom-tags:50}" 'face 'org-tag))))
+  (setq org-roam-node-display-template (concat (propertize " ${namespace:15} " 'face '(:foreground "#d3869b" :weight bold)) "${title:*}" (propertize "${doom-tags:50}" 'face 'org-tag))))
 
 (after! vulpea
   (add-hook! 'org-roam-db-autosync-mode #'vulpea-db-autosync-enable))

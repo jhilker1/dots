@@ -42,6 +42,7 @@
         en-computers
         en-science
         grc]))
+      gcc
       zlib
       (python39.withPackages(p: with p; [
         fontforge
@@ -62,6 +63,7 @@
   home.sessionVariables = {
     WSLHOME = "/mnt/c/Users/camoh";
     PROJECT_HOME="$HOME/Devel/python/";
+    LD_LIBRARY_PATH="$(nix eval nixpkgs#zlib.outPath --raw)/lib";
   };
   programs.fzf = {
       enable = true;
@@ -76,7 +78,7 @@
     shellAliases = {
       ref = "source ~/.zshrc";
       mypy = "~/.nix-profile/bin/python3 $@";
-      hms = "home-manager switch";
+      hms = "home-manager switch -f ~/.dotfiles/home.nix";
       doom = "~/.emacs.d/bin/doom $@";
       ls = "${pkgs.exa.outPath}/bin/exa -alh --git-ignore --icons";
       ll = "${pkgs.exa.outPath}/bin/exa -alh";
@@ -103,7 +105,7 @@
     shellAliases = {
       ref = "source ~/.bashrc";
       mypy = "~/.nix-profile/bin/python3 $@";
-      hms = "home-manager switch";
+      hms = "home-manager switch -f ~/.dotfiles/home.nix";
       doom = "~/.emacs.d/bin/doom $@";
       ls = "${pkgs.exa.outPath}/bin/exa -alh --git-ignore --icons";
       ll = "${pkgs.exa.outPath}/bin/exa -alh";

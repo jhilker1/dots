@@ -76,6 +76,7 @@ emacs-all-the-icons-fonts
   en-computers
   en-science
   grc]))
+gcc
 #+end_src
 
 ** Language Packages
@@ -83,6 +84,7 @@ emacs-all-the-icons-fonts
 I love working with python, but I've found that maintaining dependencies can be a pain. While I normally like to keep a few global packages (such as =numpy=, =pandas=, =matplotlib=, =fontforge=, and =flask=), I much prefer to use something like =virtualenvwrapper= to maintain environments for each project.
 #+name: hmPythonPkgs
 #+begin_src nix
+zlib
 (python39.withPackages(p: with p; [
   fontforge
   numpy
@@ -129,6 +131,7 @@ I use ZSH for my day-to-day shell. However, because I'm currently using WSL2, I 
 home.sessionVariables = {
   WSLHOME = "/mnt/c/Users/camoh";
   PROJECT_HOME="$HOME/Devel/python/";
+  LD_LIBRARY_PATH="$(nix eval nixpkgs#zlib.outPath --raw)/lib";
 };
 #+end_src
 
@@ -258,7 +261,7 @@ I keep a few shell aliases here.
 #+name: hmAliases
 #+begin_src nix
 mypy = "~/.nix-profile/bin/python3 $@";
-hms = "home-manager switch";
+hms = "home-manager switch -f ~/.dotfiles/home.nix";
 doom = "~/.emacs.d/bin/doom $@";
 ls = "${pkgs.exa.outPath}/bin/exa -alh --git-ignore --icons";
 ll = "${pkgs.exa.outPath}/bin/exa -alh";

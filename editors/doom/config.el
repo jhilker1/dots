@@ -96,6 +96,9 @@
           org-roam-ui-update-on-save t
           org-roam-ui-open-on-start t))
 
+(after! ispell
+  (setq ispell-personal-dictionary "./.pws"))
+
 (after! ox-hugo
   (setq org-hugo-front-matter-format "yaml"
         org-hugo-section "blog"
@@ -113,3 +116,9 @@
 
 (use-package! ox-moderncv)
 (use-package! ox-hugocv)
+
+(setq doom-leader-alt-key "C-SPC")
+
+(map! :leader
+      (:desc "Find file in project" ":" #'projectile-find-file)
+      (:desc "M-x" "SPC" #'execute-extended-command))

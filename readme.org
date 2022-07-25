@@ -1,5 +1,5 @@
 #+title: Dotfiles
-#+property: header-args :noweb yes
+#+property: header-args :noweb yes :mkdirp yes
 #+property: header-args:nix :tangle no
 #+property: header-args:conf-yaml :tangle ~/.fzf-marks
 #+startup: fold
@@ -283,7 +283,11 @@ programs.emacs.enable = true;
 services.emacs.enable = true;
 <<hm-neovim>>
 #+end_src
+
 *** Neovim
+:PROPERTIES:
+:header-args:lua: :tangle editors/nvim/config.lua
+:END:
 I want to enable neovim here.
 #+name: hm-neovim
 #+begin_src nix
@@ -291,9 +295,52 @@ programs.neovim = {
     enable = true;
     viAlias = true;
     vimAlias = true;
+    extraConfig = ''
+      lua << EOF
+      ${builtins.readFile ./editors/nvim/config.lua};
+    '';
+    <<nvimExtraPkgs>>
+
 };
 #+end_src
 
+**** Extra Packages
+I like to have language highlighting for nix, and I also want my colorscheme setup.
+#+name: nvimExtraPkgs
+#+begin_src nix
+plugins = with pkgs.vimPlugins; [
+  gruvbox-nvim
+  vim-nix
+  nvim-treesitter
+];
+
+#+end_src
+
+**** Configuration
+I want to use lua to learn to configure neovim.
+
+***** The Looks
+#+name: nvimGruvy
+#+begin_src lua
+require("gruvbox").setup({
+  undercurl = true,
+  underline = true,
+  bold = true,
+  italic = true,
+  strikethrough = true,
+  invert_selection = false,
+  invert_signs = false,
+  invert_tabline = false,
+  invert_intend_guides = false,
+  inverse = true, -- invert background for search, diffs, statuslines and errors
+  contrast = "hard", -- can be "hard", "soft" or empty string
+  overrides = {},
+})
+vim.cmd("colorscheme gruvbox")
+#+end_src
+
+***** Functionality
+I like to use 2 spaces for a tab, and I want to set up
 ** Git
 Is there really that much to say about this config? It's not that fancy.
 #+name: hm-git
@@ -941,11 +988,5 @@ This is my config file to Windows Terminal - while I'm not tangling it right now
 
 ** Desktop Programs
 
-** Overlays
-With VcXserv running as my xserver, I'd like to be able to quickly launch qtile.
-#+name: hm-overlays
-#+begin_src 
-
-#+end_src
 * Footnotes :noexport:
 [fn:1] The docker container for Iosevka builds is currently broken for me, with an ELIFECYCLE error - I've reached out for comment to see if it's wrong with my setup or with the container, which is why I am not including it in my =~/.bashrc= or =~/.zshrc= yet.

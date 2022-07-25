@@ -144,6 +144,17 @@
       enable = true;
       viAlias = true;
       vimAlias = true;
+      extraConfig = ''
+        lua << EOF
+        ${builtins.readFile ./editors/nvim/config.lua};
+      '';
+      plugins = with pkgs.vimPlugins; [
+        gruvbox-nvim
+        vim-nix
+        nvim-treesitter
+      ];
+      
+  
   };
   programs.git = {
     enable = true;

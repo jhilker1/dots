@@ -150,7 +150,7 @@
        ;;ocaml             ; an objective camel
        (org               ; organize your plain life in plain text
          +hugo
-         +moderncv
+         ;;+moderncv
          +pandoc
          +pretty
          +publish
@@ -289,7 +289,7 @@ I like to use childframes as much as I can, along with making my hydras prettier
 * Org-Mode
 ** Initial Setup
 #+begin_src emacs-lisp
-(setq org-directory "~/org")
+(setq org-directory "~/Dropbox/org")
 
 (after! org
   (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "HOLD(h)" "|" "DONE(d)" "CANC(c)"))
@@ -357,7 +357,7 @@ I love using org-roam for maintaining notes and notebooks. However, I also like 
 *** Initial Setup
 #+begin_src emacs-lisp
 (after! org-roam
-  (setq org-roam-directory "~/roam/"
+  (setq org-roam-directory "~/Dropbox/roam/"
         org-roam-db-location "~/.org-roam.db"
         org-roam-db-autosync-mode t
         org-roam-completion-everywhere t)
@@ -431,18 +431,18 @@ I like to use a package called =binder.el= to manage longer writing projects. I 
 
 ** Maintaining a CV
 #+begin_src emacs-lisp :tangle packages.el
-(when (featurep! :lang org +moderncv)
-  (package! ox-moderncv
-    :recipe (:host gitlab :repo "jhilker/org-cv")))
-
-(when (featurep! :lang org +hugo)
-  (package! ox-hugocv
-    :recipe (:host gitlab :repo "jhilker/org-cv")))
+;(when (featurep! :lang org +moderncv)
+;  (package! ox-moderncv
+;    :recipe (:host gitlab :repo "jhilker/org-cv")))
+;
+;(when (featurep! :lang org +hugo)
+;  (package! ox-hugocv
+;    :recipe (:host gitlab :repo "jhilker/org-cv")))
 #+end_src
 
 #+begin_src emacs-lisp
-(use-package! ox-moderncv)
-(use-package! ox-hugocv)
+;(use-package! ox-moderncv)
+;(use-package! ox-hugocv)
 #+end_src
 
 * Languages
@@ -451,6 +451,33 @@ I like to use a package called =binder.el= to manage longer writing projects. I 
 (package! virtualenvwrapper)
 #+end_src
 
+
+* Elfeed
+Elfeed has quickly become my favorite RSS reader.
+#+begin_src emacs-lisp :tangle packages.el
+(when (featurep! :app rss)
+  (package! elfeed-summary
+    :recipe (:host github :repo "SqrtMinusOne/elfeed-summary")))
+#+end_src
+
+#+begin_src emacs-lisp
+(after! elfeed
+  (setq elfeed-search-filter "@2-weeks-ago +unread"
+        elfeed-db-directory "~/Dropbox/.elfeed")
+
+  (defun elfeed-mark-all-as-read ()
+      (interactive)
+      (mark-whole-buffer)
+      (elfeed-search-untag-all-unread))
+
+  (map! :map elfeed-search-mode-map
+        :desc "Mark Entries as read" "a" #'elfeed-mark-all-as-read))
+
+(after! elfeed-org
+  (setq rmh-elfeed-org-files '("~/Dropbox/org/elfeed.org")))
+
+(add-hook! 'elfeed-search-mode-hook 'elfeed-update)
+#+end_src
 
 * Keybindings
 I want to bind my local leader key to =C-SPC=

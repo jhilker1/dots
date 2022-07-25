@@ -37,7 +37,7 @@
 (after! hydra-posframe
   (hydra-posframe-mode t))
 
-(setq org-directory "~/org")
+(setq org-directory "~/Dropbox/org")
 
 (after! org
   (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "HOLD(h)" "|" "DONE(d)" "CANC(c)"))
@@ -72,7 +72,7 @@
                      :immediate-finish t)))))
 
 (after! org-roam
-  (setq org-roam-directory "~/roam/"
+  (setq org-roam-directory "~/Dropbox/roam/"
         org-roam-db-location "~/.org-roam.db"
         org-roam-db-autosync-mode t
         org-roam-completion-everywhere t)
@@ -121,8 +121,25 @@
   (add-to-list 'org-export-global-macros '(("srcstart" . "@@hugo:<details><summary class=\"font-bold underline\">$1</summary>@@")
                                            ("srcend" . "@@hugo:</details>@@"))))
 
-(use-package! ox-moderncv)
-(use-package! ox-hugocv)
+;(use-package! ox-moderncv)
+;(use-package! ox-hugocv)
+
+(after! elfeed
+  (setq elfeed-search-filter "@2-weeks-ago +unread"
+        elfeed-db-directory "~/Dropbox/.elfeed")
+
+  (defun elfeed-mark-all-as-read ()
+      (interactive)
+      (mark-whole-buffer)
+      (elfeed-search-untag-all-unread))
+
+  (map! :map elfeed-search-mode-map
+        :desc "Mark Entries as read" "a" #'elfeed-mark-all-as-read))
+
+(after! elfeed-org
+  (setq rmh-elfeed-org-files '("~/Dropbox/org/elfeed.org")))
+
+(add-hook! 'elfeed-search-mode-hook 'elfeed-update)
 
 (setq doom-leader-alt-key "C-SPC")
 

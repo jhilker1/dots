@@ -31,12 +31,16 @@
 
 (package! binder)
 
-(when (featurep! :lang org +moderncv)
-  (package! ox-moderncv
-    :recipe (:host gitlab :repo "jhilker/org-cv")))
-
-(when (featurep! :lang org +hugo)
-  (package! ox-hugocv
-    :recipe (:host gitlab :repo "jhilker/org-cv")))
+;(when (featurep! :lang org +moderncv)
+;  (package! ox-moderncv
+;    :recipe (:host gitlab :repo "jhilker/org-cv")))
+;
+;(when (featurep! :lang org +hugo)
+;  (package! ox-hugocv
+;    :recipe (:host gitlab :repo "jhilker/org-cv")))
 
 (package! virtualenvwrapper)
+
+(when (featurep! :app rss)
+  (package! elfeed-summary
+    :recipe (:host github :repo "SqrtMinusOne/elfeed-summary")))

@@ -19,6 +19,7 @@
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
   targets.genericLinux.enable = true;
+  fonts.fontconfig.enable = true;
   home.packages = with pkgs; [
       stow
       hugo
@@ -64,8 +65,8 @@
     WSLHOME = "/mnt/c/Users/camoh";
     PROJECT_HOME="$HOME/Devel/python/";
     LD_LIBRARY_PATH="$(nix eval nixpkgs#zlib.outPath --raw)/lib";
-    DISPLAY="$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0";
-    LIBGL_ALWAYS_INDIRECT = 1;
+    #DISPLAY="$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0";
+    #LIBGL_ALWAYS_INDIRECT = 1;
   };
   programs.fzf = {
       enable = true;
@@ -80,7 +81,7 @@
     shellAliases = {
       ref = "source ~/.zshrc";
       mypy = "~/.nix-profile/bin/python3 $@";
-      hms = "home-manager switch -f ~/.dotfiles/home.nix";
+      #hms = "home-manager switch -f ~/.dotfiles/home.nix";
       doom = "~/.emacs.d/bin/doom $@";
       ls = "${pkgs.exa.outPath}/bin/exa -alh --git-ignore --icons";
       ll = "${pkgs.exa.outPath}/bin/exa -alh";
@@ -107,7 +108,7 @@
     shellAliases = {
       ref = "source ~/.bashrc";
       mypy = "~/.nix-profile/bin/python3 $@";
-      hms = "home-manager switch -f ~/.dotfiles/home.nix";
+      #hms = "home-manager switch -f ~/.dotfiles/home.nix";
       doom = "~/.emacs.d/bin/doom $@";
       ls = "${pkgs.exa.outPath}/bin/exa -alh --git-ignore --icons";
       ll = "${pkgs.exa.outPath}/bin/exa -alh";

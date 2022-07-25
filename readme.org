@@ -4,7 +4,7 @@
 #+property: header-args:conf-yaml :tangle ~/.fzf-marks
 #+startup: fold
 
-These are my "mostly literate" dotfiles. I'm currently using a mix of symlinks to manage the larger dotfiles (such as my Qtile Doom Emacs config files), while I use [[github:nix-community/home-manager][Home-Manager]] to manage things such as my alacritty config.
+These are my "mostly literate" dotfiles. I'm currently using a mix of symlinks to manage the larger dotfiles (such as my Qtile and Doom Emacs config files), while I use [[github:nix-community/home-manager][Home-Manager]] to manage things such as my alacritty config.
 
 * Home Configuration :noexport:
 First I need to set up metadata for home-manager to be able to run properly.
@@ -31,6 +31,7 @@ First I need to set up metadata for home-manager to be able to run properly.
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
   targets.genericLinux.enable = true;
+  fonts.fontconfig.enable = true;
   <<hm-packages>>
   <<hm-shells>>
   <<hm-editors>>
@@ -134,8 +135,8 @@ home.sessionVariables = {
   WSLHOME = "/mnt/c/Users/camoh";
   PROJECT_HOME="$HOME/Devel/python/";
   LD_LIBRARY_PATH="$(nix eval nixpkgs#zlib.outPath --raw)/lib";
-  DISPLAY="$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0";
-  LIBGL_ALWAYS_INDIRECT = 1;
+  #DISPLAY="$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0";
+  #LIBGL_ALWAYS_INDIRECT = 1;
 };
 #+end_src
 
@@ -265,7 +266,7 @@ I keep a few shell aliases here.
 #+name: hmAliases
 #+begin_src nix
 mypy = "~/.nix-profile/bin/python3 $@";
-hms = "home-manager switch -f ~/.dotfiles/home.nix";
+#hms = "home-manager switch -f ~/.dotfiles/home.nix";
 doom = "~/.emacs.d/bin/doom $@";
 ls = "${pkgs.exa.outPath}/bin/exa -alh --git-ignore --icons";
 ll = "${pkgs.exa.outPath}/bin/exa -alh";
@@ -943,9 +944,8 @@ This is my config file to Windows Terminal - while I'm not tangling it right now
 ** Overlays
 With VcXserv running as my xserver, I'd like to be able to quickly launch qtile.
 #+name: hm-overlays
-#+begin_src nix
+#+begin_src 
 
 #+end_src
-
 * Footnotes :noexport:
 [fn:1] The docker container for Iosevka builds is currently broken for me, with an ELIFECYCLE error - I've reached out for comment to see if it's wrong with my setup or with the container, which is why I am not including it in my =~/.bashrc= or =~/.zshrc= yet.

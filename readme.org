@@ -107,6 +107,7 @@ nodePackages.npm
 nodePackages.tailwindcss
 nodePackages.postcss-cli
 nodePackages.typescript
+nodePackages.pyright
 #+end_src
 
 *** Shell Packages
@@ -299,48 +300,22 @@ programs.neovim = {
       lua << EOF
       ${builtins.readFile ./editors/nvim/config.lua};
     '';
-    <<nvimExtraPkgs>>
+    coc.enable = true;
+    plugins = with pkgs.vimPlugins; [
+      gruvbox-nvim
+      vim-nix
+      nvim-treesitter
+      vim-lightline-coc
+      vim-airline
+      vim-airline-themes
+      coc-pyright
+    ];
 
+    withPython3 = true;
+    withNodeJs = true;
 };
 #+end_src
 
-**** Extra Packages
-I like to have language highlighting for nix, and I also want my colorscheme setup.
-#+name: nvimExtraPkgs
-#+begin_src nix
-plugins = with pkgs.vimPlugins; [
-  gruvbox-nvim
-  vim-nix
-  nvim-treesitter
-];
-
-#+end_src
-
-**** Configuration
-I want to use lua to learn to configure neovim.
-
-***** The Looks
-#+name: nvimGruvy
-#+begin_src lua
-require("gruvbox").setup({
-  undercurl = true,
-  underline = true,
-  bold = true,
-  italic = true,
-  strikethrough = true,
-  invert_selection = false,
-  invert_signs = false,
-  invert_tabline = false,
-  invert_intend_guides = false,
-  inverse = true, -- invert background for search, diffs, statuslines and errors
-  contrast = "hard", -- can be "hard", "soft" or empty string
-  overrides = {},
-})
-vim.cmd("colorscheme gruvbox")
-#+end_src
-
-***** Functionality
-I like to use 2 spaces for a tab, and I want to set up
 ** Git
 Is there really that much to say about this config? It's not that fancy.
 #+name: hm-git

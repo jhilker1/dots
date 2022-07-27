@@ -59,6 +59,7 @@
       nodePackages.tailwindcss
       nodePackages.postcss-cli
       nodePackages.typescript
+      nodePackages.pyright
       
     ];
   home.sessionVariables = {
@@ -148,13 +149,19 @@
         lua << EOF
         ${builtins.readFile ./editors/nvim/config.lua};
       '';
+      coc.enable = true;
       plugins = with pkgs.vimPlugins; [
         gruvbox-nvim
         vim-nix
         nvim-treesitter
+        vim-lightline-coc
+        vim-airline
+        vim-airline-themes
+        coc-pyright
       ];
-      
   
+      withPython3 = true;
+      withNodeJs = true;
   };
   programs.git = {
     enable = true;

@@ -13,3 +13,5 @@ require("gruvbox").setup({
   overrides = {},
 })
 vim.cmd("colorscheme gruvbox")
+
+vim.opt.relativenumber = true

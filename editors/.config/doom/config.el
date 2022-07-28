@@ -138,6 +138,9 @@
 ;(use-package! ox-moderncv)
 ;(use-package! ox-hugocv)
 
+(after! magit-delta
+  (add-hook! 'magit-mode #'magit-delta-mode)
+
 (after! elfeed
   (setq elfeed-search-filter "@2-weeks-ago +unread"
         elfeed-db-directory "~/Dropbox/.elfeed")

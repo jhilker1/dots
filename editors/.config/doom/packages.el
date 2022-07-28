@@ -39,6 +39,8 @@
 ;  (package! ox-hugocv
 ;    :recipe (:host gitlab :repo "jhilker/org-cv")))
 
+(package! magit-delta)
+
 (package! virtualenvwrapper)
 
 (when (featurep! :app rss)

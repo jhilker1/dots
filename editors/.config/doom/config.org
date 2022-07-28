@@ -461,6 +461,16 @@ I like to use a package called =binder.el= to manage longer writing projects. I 
 #+end_src
 
 * Languages
+I first want to set up delta in emacs. Delta is a superior diff tool IMO.
+#+begin_src emacs-lisp :tangle packages.el
+(package! magit-delta)
+#+end_src
+
+#+begin_src emacs-lisp
+(after! magit-delta
+  (add-hook! 'magit-mode #'magit-delta-mode)
+#+end_src
+
 ** Python
 #+begin_src emacs-lisp :tangle packages.el
 (package! virtualenvwrapper)

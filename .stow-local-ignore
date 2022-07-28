@@ -1,0 +1,4 @@
+\.git(?:$|ignore|attributes)
+.*\.org
+editors/nvim
+secrets

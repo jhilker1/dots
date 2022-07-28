@@ -1,8 +1,7 @@
 (after! hydra-posframe
   (hydra-posframe-mode t))
 
-(use-package! lsp-tailwindcss
-  :init
+(after! lsp-tailwindcss
   (setq lsp-tailwindcss-add-on-mode t))
 
 (setq user-full-name "Jacob Hilker"
@@ -26,13 +25,28 @@
       doom-unicode-font (font-spec :name "Josevka")
       doom-variable-pitch-font (font-spec :name "Josevka Book Sans" :size 17))
 
-(set-face-attribute 'default nil :background "#1d2021")
+(set-face-attribute 'default nil :background "#1d2021") ;; Gruvbox Dark Hard
+
 (after! doom-themes
   (setq doom-themes-enable-bold t
         doom-themes-enable-italic t))
 
 (custom-set-faces!
   '(font-lock-comment-face :slant italic))
+
+;(after! ielm
+;  (set-popup-rule! "*ielm*" :side 'right :size 0.4))
+;
+;(after! helpful
+;  (set-popup-rule! "*helpful\:\* *" :side 'right :size 0.4))
+
+(setq +popup-defaults
+  (list :side   'right
+;        ;:height 0.16
+        :width  0.5
+        :quit   t
+        :select #'ignore
+        :ttl    5))
 
 (after! hydra-posframe
   (hydra-posframe-mode t))

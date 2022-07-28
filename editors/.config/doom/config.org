@@ -33,7 +33,7 @@
        ;;nav-flash         ; blink cursor line after big motions
        ;;neotree           ; a project drawer, like NERDTree for vim
        ophints           ; highlight the region an operation acts on
-       (popup +defaults)   ; tame sudden yet inevitable temporary windows
+       (popup +defaults +all)   ; tame sudden yet inevitable temporary windows
        ;;tabs              ; a tab bar for Emacs
        treemacs          ; a project drawer, like neotree but cooler
        unicode           ; extended unicode support for various languages
@@ -223,8 +223,7 @@ I like to use childframes as much as I can, along with making my hydras prettier
 
 I also want my tailwind server to work as an add-on.
 #+begin_src emacs-lisp
-(use-package! lsp-tailwindcss
-  :init
+(after! lsp-tailwindcss
   (setq lsp-tailwindcss-add-on-mode t))
 #+end_src
 
@@ -260,13 +259,28 @@ I use firefox as my browser, though I need to configure Emacs to use it.
       doom-unicode-font (font-spec :name "Josevka")
       doom-variable-pitch-font (font-spec :name "Josevka Book Sans" :size 17))
 
-(set-face-attribute 'default nil :background "#1d2021")
+(set-face-attribute 'default nil :background "#1d2021") ;; Gruvbox Dark Hard
+
 (after! doom-themes
   (setq doom-themes-enable-bold t
         doom-themes-enable-italic t))
 
 (custom-set-faces!
   '(font-lock-comment-face :slant italic))
+
+;(after! ielm
+;  (set-popup-rule! "*ielm*" :side 'right :size 0.4))
+;
+;(after! helpful
+;  (set-popup-rule! "*helpful\:\* *" :side 'right :size 0.4))
+
+(setq +popup-defaults
+  (list :side   'right
+;        ;:height 0.16
+        :width  0.5
+        :quit   t
+        :select #'ignore
+        :ttl    5))
 #+end_src
 
 ** Hydra
@@ -285,6 +299,7 @@ I like to use childframes as much as I can, along with making my hydras prettier
 (after! hydra-posframe
   (hydra-posframe-mode t))
 #+end_src
+
 
 * Org-Mode
 ** Initial Setup
@@ -450,7 +465,6 @@ I like to use a package called =binder.el= to manage longer writing projects. I 
 #+begin_src emacs-lisp :tangle packages.el
 (package! virtualenvwrapper)
 #+end_src
-
 
 * Elfeed
 Elfeed has quickly become my favorite RSS reader.

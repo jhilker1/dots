@@ -49,11 +49,15 @@ home.packages = with pkgs; [
     neofetch
     jq
     git-crypt
-    go
+    dict
+    dictdDBs.wordnet
+    dictdDBs.wiktionary
   #  ncspot
     <<hmDoomPkgs>>
     <<hmPythonPkgs>>
     <<hmNode>>
+    <<hmRust>>
+    <<hmGo>>
     <<hmShellPkgs>>
   ];
 #+end_src
@@ -107,6 +111,20 @@ nodePackages.tailwindcss
 nodePackages.postcss-cli
 nodePackages.typescript
 nodePackages.pyright
+#+end_src
+
+**** Rust
+#+name: hmRust
+#+begin_src nix
+rustc
+cargo
+##rustup
+#+end_src
+
+**** Go
+#+name: hmGo
+#+begin_src nix
+go
 #+end_src
 
 *** Shell Packages

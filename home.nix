@@ -26,7 +26,9 @@
       neofetch
       jq
       git-crypt
-      go
+      dict
+      dictdDBs.wordnet
+      dictdDBs.wiktionary
     #  ncspot
       sqlite
       binutils
@@ -60,6 +62,10 @@
       nodePackages.postcss-cli
       nodePackages.typescript
       nodePackages.pyright
+      rustc
+      cargo
+      ##rustup
+      go
       
     ];
   home.sessionVariables = {

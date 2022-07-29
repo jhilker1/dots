@@ -29,6 +29,9 @@
       dict
       dictdDBs.wordnet
       dictdDBs.wiktionary
+      powershell
+      unzip
+      youtube-dl
     #  ncspot
       sqlite
       binutils
@@ -69,6 +72,7 @@
       
     ];
   home.sessionVariables = {
+    EDITOR="$HOME/.nix-profile/bin/nvim";
     WSLHOME = "/mnt/c/Users/camoh";
     PROJECT_HOME="$HOME/Devel/python/";
     LD_LIBRARY_PATH="$(nix eval nixpkgs#zlib.outPath --raw)/lib";
@@ -106,7 +110,12 @@
       fi
   function toWorkOn(){
       project="$(lsvirtualenv -b | fzf)"
-      echo $project
+      if [[  $VIRTUALENVWRAPPER_VIRTUALENV == "virtualenv" ]]; then
+         printf "virtualenv inactive\n"
+      else
+         printf "working on %s\n" "$project"
+      fi
+  
   }
     '';
   };
@@ -133,7 +142,12 @@
       fi
       function toWorkOn(){
           project="$(lsvirtualenv -b | fzf)"
-          echo $project
+          if [[  $VIRTUALENVWRAPPER_VIRTUALENV == "virtualenv" ]]; then
+             printf "virtualenv inactive\n"
+          else
+             printf "working on %s\n" "$project"
+          fi
+      
       }
       '';
   };
@@ -144,6 +158,9 @@
     settings = {
       line_break.disabled = true;
     };
+  };
+  programs.tmux = {
+    enable = true;
   };
   programs.emacs.enable = true;
   services.emacs.enable = true;
@@ -156,6 +173,8 @@
         ${builtins.readFile ./editors/nvim/config.lua};
       '';
       coc.enable = true;
+      #coc.package = pkgs.vimPlugins.nvim-lspconfig;
+  
       plugins = with pkgs.vimPlugins; [
         gruvbox-nvim
         vim-nix
@@ -164,6 +183,7 @@
         vim-airline
         vim-airline-themes
         coc-pyright
+        coc-tailwindcss
       ];
   
       withPython3 = true;
@@ -175,6 +195,7 @@
     userEmail = "jacob.hilker2@gmail.com";
     signing = {
       key = "jacob.hilker2@gmail.com";
+  
       signByDefault = true;
     };
     delta = {

@@ -139,7 +139,7 @@
 ;(use-package! ox-hugocv)
 
 (after! magit-delta
-  (add-hook! 'magit-mode #'magit-delta-mode)
+  (add-hook! 'magit-mode #'magit-delta-mode))
 
 (after! elfeed
   (setq elfeed-search-filter "@2-weeks-ago +unread"

@@ -15,3 +15,5 @@ require("gruvbox").setup({
 vim.cmd("colorscheme gruvbox")
 
 vim.opt.relativenumber = true
+vim.opt.expandtab = true
+vim.opt.tabstop = 2

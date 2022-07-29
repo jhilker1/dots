@@ -5,7 +5,6 @@
 #+startup: fold
 
 
-* Home Configuration :noexport:
 First I need to set up metadata for home-manager to be able to run properly.
 #+name: hm-core
 #+begin_src nix :tangle home.nix
@@ -33,13 +32,14 @@ First I need to set up metadata for home-manager to be able to run properly.
   fonts.fontconfig.enable = true;
   <<hm-packages>>
   <<hm-shells>>
+  <<hm-tmux>>
   <<hm-editors>>
   <<hm-git>>
   <<hm-gpg>>
 }
 #+end_src
 
-** Packages
+* Packages
 I have several packages I'd like to install - namely GNU Stow, Hugo, and neofetch, though as I install more I will add them here.
 #+name: hm-packages
 #+begin_src nix
@@ -52,6 +52,9 @@ home.packages = with pkgs; [
     dict
     dictdDBs.wordnet
     dictdDBs.wiktionary
+    powershell
+    unzip
+    youtube-dl
   #  ncspot
     <<hmDoomPkgs>>
     <<hmPythonPkgs>>
@@ -62,7 +65,7 @@ home.packages = with pkgs; [
   ];
 #+end_src
 
-*** Doom Emacs Requirements
+** Doom Emacs Requirements
 I need to add doom emacs' requirements here.
 #+name: hmDoomPkgs
 #+begin_src nix
@@ -84,7 +87,7 @@ emacs-all-the-icons-fonts
 gcc
 #+end_src
 
-*** Language Packages
+** Language Packages
 **** Python
 I love working with python, but I've found that maintaining dependencies can be a pain. While I normally like to keep a few global packages (such as =numpy=, =pandas=, =matplotlib=, =fontforge=, and =flask=), I much prefer to use something like =virtualenvwrapper= to maintain environments for each project.
 #+name: hmPythonPkgs
@@ -127,14 +130,14 @@ cargo
 go
 #+end_src
 
-*** Shell Packages
-I like to use exa as an ls replacement.
+** Shell Packages
+I like to use =exa= as an ls replacement.
 #+name: hmShellPkgs
 #+begin_src nix
 
 #+end_src
 
-** Shell Configuration
+* Shell Configuration
 I use ZSH for my day-to-day shell. However, because I'm currently using WSL2, I wanted to be able to manage bash as well. I merely enable bash integration here, though I want to set up auto-cd as well, since I tend to use that as well as FZF-marks.
 #+name: hm-shells
 #+begin_src nix
@@ -145,11 +148,12 @@ I use ZSH for my day-to-day shell. However, because I'm currently using WSL2, I 
 <<hmStarship>>
 #+end_src
 
-*** Global Variables
+** Global Variables
 Since I am also using VcXserv as a graphical display, I'd like to be able to quickly launch my window manager of choice (Qtile), but I need to account for the fact that I need to use my windows machine as a display.
 #+name: hmSessVars
 #+begin_src nix
 home.sessionVariables = {
+  EDITOR="$HOME/.nix-profile/bin/nvim";
   WSLHOME = "/mnt/c/Users/camoh";
   PROJECT_HOME="$HOME/Devel/python/";
   LD_LIBRARY_PATH="$(nix eval nixpkgs#zlib.outPath --raw)/lib";
@@ -158,7 +162,7 @@ home.sessionVariables = {
 };
 #+end_src
 
-*** Functions
+** Functions
 I have a few global functions I want to be available - namely FZF related functions with Docker, such as building my Iosevka fonts, creating a gitignore, etc.
 **** Build Custom Iosevka
 I want to quickly build an Iosevka font - it's what I use for all my config files.[fn:1]
@@ -181,12 +185,17 @@ I also want to quickly work on python projects.
 #+begin_src sh
 function toWorkOn(){
     project="$(lsvirtualenv -b | fzf)"
-    echo $project
+    if [[  $VIRTUALENVWRAPPER_VIRTUALENV == "virtualenv" ]]; then
+       printf "virtualenv inactive\n"
+    else
+       printf "working on %s\n" "$project"
+    fi
+
 }
 #+end_src
 
-*** ZSH
-I prefer to use ZSH over Bash because of syntax highlighting and autosuggestions.
+** ZSH
+I prefer to use ZSH over Bash because of syntax highlighting and auto-suggestions.
 #+name: hmZsh
 #+begin_src nix
 programs.zsh = {
@@ -207,7 +216,7 @@ programs.zsh = {
 };
 #+end_src
 
-*** Bash
+** Bash
 Although I normally use ZSH, sometimes I might want or need to use bash for a simple script. This just sets up my ZSH to be run if if my nix zsh exists.
 #+name: hmBash
 #+begin_src nix
@@ -226,7 +235,7 @@ programs.bash = {
 };
 #+end_src
 
-*** Programs
+** Programs
 **** FZF
 #+name: hmFzf
 #+begin_src nix
@@ -260,7 +269,7 @@ programs.starship = {
 };
 #+end_src
 
-*** Misc Changes
+** Misc Changes
 **** Enabling VirtualEnvWrapper
 
 #+name: venvWrapperConf
@@ -279,7 +288,7 @@ if [ -z "$RUNNING" ]; then
 fi
 #+end_src
 
-*** Aliases
+** Aliases
 I keep a few shell aliases here.
 #+name: hmAliases
 #+begin_src nix
@@ -293,7 +302,15 @@ notify-send = "wsl-notify-send.exe $@";
 spicetify = "spicetify.exe $@";
 #+end_src
 
-** Editors
+* Tmux
+Tmux is a terminal multiplexer.
+#+name: hm-tmux
+#+begin_src nix
+programs.tmux = {
+  enable = true;
+};
+#+end_src
+* Editors
 While I normally use emacs for large-scale projects, I do like to use neovim for quick edits.
 #+name: hm-editors
 #+begin_src nix
@@ -302,7 +319,7 @@ services.emacs.enable = true;
 <<hm-neovim>>
 #+end_src
 
-*** Neovim
+** Neovim
 :PROPERTIES:
 :header-args:lua: :tangle editors/nvim/config.lua
 :END:
@@ -318,6 +335,8 @@ programs.neovim = {
       ${builtins.readFile ./editors/nvim/config.lua};
     '';
     coc.enable = true;
+    #coc.package = pkgs.vimPlugins.nvim-lspconfig;
+
     plugins = with pkgs.vimPlugins; [
       gruvbox-nvim
       vim-nix
@@ -326,6 +345,7 @@ programs.neovim = {
       vim-airline
       vim-airline-themes
       coc-pyright
+      coc-tailwindcss
     ];
 
     withPython3 = true;
@@ -333,7 +353,7 @@ programs.neovim = {
 };
 #+end_src
 
-** Git
+* Git
 Is there really that much to say about this config? It's not that fancy.
 #+name: hm-git
 #+begin_src nix
@@ -343,13 +363,14 @@ programs.git = {
   userEmail = "jacob.hilker2@gmail.com";
   signing = {
     key = "jacob.hilker2@gmail.com";
+
     signByDefault = true;
   };
   <<hmGitDelta>>
   <<hmGitExtra>>
 };
 #+end_src
-*** Extra Configuration
+** Extra Configuration
 I like to use "main" as my default branch rather than "master".
 #+name: hmGitExtra
 #+begin_src nix
@@ -358,7 +379,7 @@ extraConfig = {
 };
 #+end_src
 
-*** Delta
+** Delta
 I like to use delta for viewing diffs.
 #+name: hmGitDelta
 #+begin_src nix
@@ -367,14 +388,15 @@ delta = {
 };
 #+end_src
 
-** GPG
+* GPG
 I use GPG to sign all of my git commits and to encrypt sensitive files.
 #+name: hm-gpg
 #+begin_src nix
 programs.gpg.enable = true;
 <<hm-gpg-agent>>
 #+end_src
-*** GPG-Agent
+
+** GPG-Agent
 However, although I love GPG, I don't want to enter a password every 10 minutes - I'd much rather enter the password once for the day and enable that.
 #+name: hm-gpg-agent
 #+begin_src nix
@@ -388,7 +410,7 @@ services.gpg-agent = {
 };
 #+end_src
 
-** Media Programs
+* Media Programs
 *** NCSpot
 Ncspot has quickly become my terminal-based spotify client of choice. Sure, I /technically/ have the graphical client, but why use that when ncspot is so much more simpler? While I don't use ncspot on WSL, on my lower-end machines I feel as though it's the simplest choice to configure and set up.
 #+name: hm-ncspot
@@ -405,7 +427,7 @@ programs.ncspot = {
 };
 #+end_src
 
-** WSL-Specific Programs
+* WSL-Specific Programs
 *** Windows Terminal
 This is my config file to Windows Terminal - while I'm not tangling it right now, it contains everything I need for getting my terminal up and running.
 #+begin_src json :tangle no
@@ -978,7 +1000,7 @@ This is my config file to Windows Terminal - while I'm not tangling it right now
 }
 #+end_src
 
-** Desktop Programs
+* Desktop Programs
 
 
 * Footnotes :noexport:

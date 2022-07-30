@@ -256,7 +256,7 @@ org: /mnt/c/Users/camoh/Dropbox/org/
 
 
 **** Starship
-Starship is my terminal prompt of choice - what can I say, it's absolutely incredible.
+starship is my terminal prompt of choice - what can I say, it's absolutely incredible.
 #+name: hmStarship
 #+begin_src nix
 programs.starship = {

@@ -204,6 +204,7 @@ gi() {
         curl -sL "https://www.toptal.com/developers/gitignore/api/$toIgnore" >> .gitignore
 }
 #+end_src
+
 ** ZSH
 I prefer to use ZSH over Bash because of syntax highlighting and auto-suggestions.
 #+name: hmZsh

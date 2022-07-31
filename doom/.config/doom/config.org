@@ -251,6 +251,15 @@ I use firefox as my browser, though I need to configure Emacs to use it.
    browse-url-browser-function #'browse-url-generic))
 #+end_src
 
+*** Copy/Paste text
+#+begin_src emacs-lisp
+(defun copy-selected-text (start end)
+  (interactive "r")
+  (if (use-region-p)
+      (let((text (buffer-substring-no-properties start end)))
+        (shell-command (concat "echo '" text "' | clip.exe")))))
+#+end_src
+
 * UI Changes
 #+begin_src emacs-lisp
 (setq doom-theme 'doom-gruvbox
@@ -323,6 +332,7 @@ I like to use childframes as much as I can, along with making my hydras prettier
   ;(setq display-line-numbers-type 'nil)
   (setq display-line-numbers nil)
   (set-face-attribute 'org-block nil :inherit 'fixed-pitch)
+  (set-face-attribute 'org-table nil :inherit 'fixed-pitch)
   (set-face-attribute 'org-document-title nil :font (font-spec :family "Josevka Book Slab" :size 22) :weight 'bold))
 
 (add-hook! 'org-mode-hook #'jh/org-ui-hook)

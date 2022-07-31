@@ -79,10 +79,16 @@
     #DISPLAY="$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0";
     #LIBGL_ALWAYS_INDIRECT = 1;
   };
+  programs.direnv = {
+    enable = true;
+    enableBashIntegration = true;
+    enableZshIntegration = true;
+  };
   programs.fzf = {
       enable = true;
       enableBashIntegration = true;
       enableZshIntegration = true;
+      tmux.enableShellIntegration = true;
   };
   programs.zsh = {
     enable = true;
@@ -108,15 +114,20 @@
           sudo dockerd > /dev/null 2>&1 &
           disown
       fi
-  function toWorkOn(){
-      project="$(lsvirtualenv -b | fzf)"
-      if [[  $VIRTUALENVWRAPPER_VIRTUALENV == "virtualenv" ]]; then
-         printf "virtualenv inactive\n"
-      else
-         printf "working on %s\n" "$project"
-      fi
-  
-  }
+      function toWorkOn(){
+          project="$(lsvirtualenv -b | fzf)"
+          if [[  $VIRTUALENVWRAPPER_VIRTUALENV == "virtualenv" ]]; then
+            workon $project
+          else
+             printf "deactivating venv for %s\n" "$project"
+             deactivate; workon $project
+          fi
+      
+      }
+      gi() {
+              toIgnore="$(curl -sLw "\n" https://www.toptal.com/developers/gitignore/api/list | sed 's/,/\n/g' | fzf -m | xargs | sed 's/\s/,/g')"
+              curl -sL "https://www.toptal.com/developers/gitignore/api/$toIgnore" >> .gitignore
+      }
     '';
   };
   programs.bash = {
@@ -143,11 +154,16 @@
       function toWorkOn(){
           project="$(lsvirtualenv -b | fzf)"
           if [[  $VIRTUALENVWRAPPER_VIRTUALENV == "virtualenv" ]]; then
-             printf "virtualenv inactive\n"
+            workon $project
           else
-             printf "working on %s\n" "$project"
+             printf "deactivating venv for %s\n" "$project"
+             deactivate; workon $project
           fi
       
+      }
+      gi() {
+              toIgnore="$(curl -sLw "\n" https://www.toptal.com/developers/gitignore/api/list | sed 's/,/\n/g' | fzf -m | xargs | sed 's/\s/,/g')"
+              curl -sL "https://www.toptal.com/developers/gitignore/api/$toIgnore" >> .gitignore
       }
       '';
   };
@@ -161,6 +177,8 @@
   };
   programs.tmux = {
     enable = true;
+    shortcut = "a";
+    keyMode = "vi";
   };
   programs.emacs.enable = true;
   services.emacs.enable = true;

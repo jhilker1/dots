@@ -19,6 +19,12 @@
    browse-url-generic-args     '("/c" "start")
    browse-url-browser-function #'browse-url-generic))
 
+(defun copy-selected-text (start end)
+  (interactive "r")
+  (if (use-region-p)
+      (let((text (buffer-substring-no-properties start end)))
+        (shell-command (concat "echo '" text "' | clip.exe")))))
+
 (setq doom-theme 'doom-gruvbox
       ;; doom-theme 'doom-nord ;; 20242C
       doom-font (font-spec :name "Josevka" :size 17)
@@ -67,6 +73,7 @@
   ;(setq display-line-numbers-type 'nil)
   (setq display-line-numbers nil)
   (set-face-attribute 'org-block nil :inherit 'fixed-pitch)
+  (set-face-attribute 'org-table nil :inherit 'fixed-pitch)
   (set-face-attribute 'org-document-title nil :font (font-spec :family "Josevka Book Slab" :size 22) :weight 'bold))
 
 (add-hook! 'org-mode-hook #'jh/org-ui-hook)

@@ -32,6 +32,7 @@
       powershell
       unzip
       youtube-dl
+      texlive.combined.scheme-full
     #  ncspot
       sqlite
       binutils
@@ -225,6 +226,12 @@
     };
   };
   programs.gpg.enable = true;
+  programs.keychain = {
+    enable = true;
+    keys = [
+      "id_ed25519"
+    ];
+  };
   services.gpg-agent = {
     enable = true;
     enableBashIntegration = true;

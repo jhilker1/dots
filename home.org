@@ -55,6 +55,7 @@ home.packages = with pkgs; [
     powershell
     unzip
     youtube-dl
+    texlive.combined.scheme-full
   #  ncspot
     <<hmDoomPkgs>>
     <<hmPythonPkgs>>
@@ -421,6 +422,12 @@ I use GPG to sign all of my git commits and to encrypt sensitive files.
 #+name: hm-gpg
 #+begin_src nix
 programs.gpg.enable = true;
+programs.keychain = {
+  enable = true;
+  keys = [
+    "id_ed25519"
+  ];
+};
 <<hm-gpg-agent>>
 #+end_src
 

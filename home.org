@@ -85,6 +85,7 @@ emacs-all-the-icons-fonts
   en-science
   grc]))
 gcc
+libvterm
 #+end_src
 
 ** Language Packages
@@ -258,6 +259,7 @@ programs.direnv = {
   enableZshIntegration = true;
 };
 #+end_src
+
 **** FZF
 #+name: hmFzf
 #+begin_src nix

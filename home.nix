@@ -49,6 +49,7 @@
         en-science
         grc]))
       gcc
+      libvterm
       zlib
       (python39.withPackages(p: with p; [
         fontforge

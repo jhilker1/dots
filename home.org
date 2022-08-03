@@ -343,9 +343,9 @@ programs.tmux = {
 While I normally use emacs for large-scale projects, I do like to use neovim for quick edits.
 #+name: hm-editors
 #+begin_src nix
-programs.emacs.enable = true;
-services.emacs.enable = true;
-<<hm-neovim>>
+  programs.emacs.enable = true;
+  services.emacs.enable = true;
+  <<hm-neovim>>
 #+end_src
 
 ** Neovim
